@@ -401,10 +401,10 @@ endef
 ###
 ### PEG parser
 ###
-$(BUILD)/generated/peg.g.l: $(GEN_EVAL) source/parsing/peg.g source/parsing/gen-peg.l source/parsing/parser.l source/parsing/peg-compiler.l
+$(BUILD)/generated/peg.g.l: $(GEN_EVAL) source/parsing/peg.g source/parsing/bootstrap-peg-parser.l source/parsing/parser.l source/parsing/peg-compiler.l
 	@mkdir -p $(BUILD)/generated
 #	$(call ensure-built,$(GEN_EVAL))
-	$(TIME) $(GEN_EVAL) -O boot.l source/parsing/gen-peg.l >$@ \
+	$(TIME) $(GEN_EVAL) -O boot.l source/parsing/bootstrap-peg-parser.l >$@ \
 		|| { $(BACKDATE_FILE) $@; exit 42; }
 	cp $@ $@.$(shell date '+%Y%m%d.%H%M%S')
 
