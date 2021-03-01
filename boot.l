@@ -30,14 +30,20 @@
 (define error)
 
 (define primitive/print		print)
-(define primitive/print-all	print-all)
+(define primitive/print-all	(lambda args
+                                  (set args (cdr args)) ; drop the stream arg
+                                  (while (pair? args)
+                                    (print (car args))
+                                    (set args (cdr args)))))
 (define primitive/dump		dump)
-(define primitive/dump-all	dump-all)
+;;(define primitive/dump-all	dump-all)
+
+(define *standard-output*	'dummy-standard-output)
+(define *error-output*		'dummy-error-output)
 
 (define error/nested/2
   (lambda args
     (set error abort) ; let's give up in case of more recursive errors
-    (apply primitive/dump-all (cons *error-output* (cons "\nNESTED ERROR LEVEL 2: " args)))
     (primitive/print-all *error-output* "\n")
     (abort)))
 
